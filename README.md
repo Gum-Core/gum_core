@@ -1,9 +1,9 @@
 <b>Natives infromation from Framework</b> : http://gum-framework.eu/natives/
-</br></br></br></br>
+</br></br></br></br> 
 
 
 
-# Gum_Framework Core</br></br>
+# Gum_Framework Core</br></br> 
 
 <h2>Commands :</h2>
 /addwl [IDENTIFIER]&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Without STEAM: for add to whitelist</br>
