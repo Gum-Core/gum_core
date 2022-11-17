@@ -6,6 +6,7 @@
 # Gum_Framework Core</br></br> 
 
 ## Requirements
+- [spawnmanager](https://github.com/Gum-Core/spawnmanager) 
 - [ghmattimysql](https://github.com/Gum-Core/ghmattimysql) 
 - [uiprompt](https://github.com/Gum-Core/uiprompt) 
 - [ghmattimysql](https://github.com/Gum-Core/ghmattimysql) 
