@@ -183,7 +183,6 @@ RegisterCommand("setjob", function(source, args)
 	end
 end)
 
-
 RegisterCommand("setchar", function(source, args)
 	local _source = source
 	if _source == 0 then
@@ -195,7 +194,7 @@ RegisterCommand("setchar", function(source, args)
 			function (result)
 			end)
 			if Config.Info_print then
-				gumCore.Debug("Player "..steam_hex.." get  "..char_count.." Count")
+				gumCore.Debug("Player "..steam_hex.." get "..char_count.." Count")
 			end
 		else
 			gumCore.Error("Bad syntax : use example : /setchar 1100010fffd026 2")
@@ -434,8 +433,6 @@ function Character.setMeta(source, meta_table)
 	end
 end
 
-
-
 RegisterServerEvent('gum:setJob')
 AddEventHandler('gum:setJob', function(source, job, grade)
 	local _source = source
@@ -459,8 +456,6 @@ AddEventHandler('gum:setJob', function(source, job, grade)
 		gumCore.Error("Someting is wrong, check function\nCharacter.setJob(source, 'example', 1)\nArgs : Target, JobName, JobGrade")
 	end
 end)
-
-
 
 RegisterServerEvent('gum:setJobGrade')
 AddEventHandler('gum:setJobGrade', function(source, charid, grade)
@@ -533,8 +528,6 @@ AddEventHandler('gum:addMoney', function(source, curr, much)
 	end
 end)
 
-
-
 function Character.addCurrency(source, type, much)
 	local _source = source
 	if _source ~= nil and type ~= nil and much ~= nil then
@@ -591,6 +584,7 @@ if Config.Onesync == true then
 		local _source = source
 		local User = gumCore.getUser(tonumber(_source))
 		local Ident = GetPlayerIdentifier(tonumber(_source))
+		PlayerTable[_source] = nil
 		if User ~= nil then
 			if CanSaveCoords[tonumber(_source)] ~= nil then
 				local Character = User.getUsedCharacter
@@ -631,6 +625,12 @@ else
 		end
 	end)
 end
+
+
+function gumCore.getPlayers(source)
+	return (PlayerTable) 
+end
+
 
 RegisterServerEvent('gumCore:save_coords')
 AddEventHandler('gumCore:save_coords', function(coord_send)
@@ -751,10 +751,10 @@ Citizen.CreateThread(function()
 		local count = 0
 		for k,v in pairs(GetPlayers()) do
 			count = count+1
-			Citizen.Wait(50)
+			Citizen.Wait(100)
 		end
 		TriggerClientEvent("gum_core:sendBack", -1, count)
-		Citizen.Wait(60000)
+		Citizen.Wait(5*60000)
 	end
 end)
 RegisterServerEvent('gumCore:GetPlayerIds')
@@ -872,13 +872,13 @@ function gumCore.addCharacter(source, firstname, lastname, skintable, clothetabl
 		table.insert(items_start, {itemId=mathRandom, item=k, count=v, metadata={}})
 	end
 	local status = '{"Hunger":100.0, "Thirst":100.0}'
-	exports.ghmattimysql:execute("INSERT INTO characters (`identifier`,`firstname`,`lastname`,`skinPlayer`,`compPlayer`,`inventory`,`coords`,`meta`,`money`) VALUES (@identifier,@firstname,@lastname,@skinPlayer,@compPlayer,@inventory,@coords,@meta,@money)", {['identifier'] = identifier,['firstname'] = firstname,['lastname'] = lastname,['skinPlayer'] = skintable,['money']=Config.StartMoney,['compPlayer'] = clothetable,['inventory']=json.encode(items_start), ['coords']=json.encode(Config.SpawnCoords),['meta']=status},
+	exports.ghmattimysql:execute("INSERT INTO characters (`identifier`,`firstname`,`lastname`,`skinPlayer`,`compPlayer`,`inventory`,`coords`,`meta`,`money`) VALUES (@identifier,@firstname,@lastname,@skinPlayer,@compPlayer,@inventory,@coords,@meta,@money)", {['identifier'] = identifier,['firstname'] = firstname,['lastname'] = lastname,['skinPlayer'] = skintable,['money']=Config.StartMoney,['compPlayer'] = clothetable,['inventory']=json.encode(items_start), ['coords']=json.encode(coords_start),['meta']=status},
 	function (result)
 		exports.ghmattimysql:execute('SELECT * FROM characters WHERE identifier=@identifier' , {['identifier']=identifier}, function(result2)
 			if result2 ~= nil then
 				for k,v in pairs(result2) do
 					if identifier == v.identifier then
-						table.insert(AllCharacters, {setJob=Character.setJob,setMeta=Character.setMeta,addCurrency=Character.addCurrency,removeCurrency=Character.removeCurrency,buySkin=Character.buySkin,changeSkin=Character.changeSkin,buySkinPlayer=Character.buySkinPlayer,identifier=v.identifier,charIdentifier=v.charidentifier,firstname=v.firstname,lastname=v.lastname,skin=v.skinPlayer,comp=v.compPlayer,money=v.money,meta=v.meta,gold=v.gold,rol=v.rol,xp=v.xp,inventory=v.inventory,job=v.job,jobgrade=v.jobgrade,coords=Config.SpawnCoords})
+						table.insert(AllCharacters, {setJob=Character.setJob,setMeta=Character.setMeta,addCurrency=Character.addCurrency,removeCurrency=Character.removeCurrency,buySkin=Character.buySkin,changeSkin=Character.changeSkin,buySkinPlayer=Character.buySkinPlayer,identifier=v.identifier,charIdentifier=v.charidentifier,firstname=v.firstname,lastname=v.lastname,skin=v.skinPlayer,comp=v.compPlayer,money=v.money,meta=v.meta,gold=v.gold,rol=v.rol,xp=v.xp,inventory=v.inventory,job=v.job,jobgrade=v.jobgrade,coords=coords_start})
 						-- setUsedAfterCreate(source, v.charIdentifier)
 					end
 				end
@@ -892,7 +892,6 @@ AddEventHandler('playerDropped', function (reason)
     local identifier = GetPlayerIdentifier(tonumber(_source))
 	LoadedUsers[identifier].setUsedCharacter = User.setUsedCharacter
 end)
-
 function User.setUsedCharacter(source, charidentifier)
 	local _source = source
 	local trfirstname = ""
@@ -904,11 +903,11 @@ function User.setUsedCharacter(source, charidentifier)
 			trfirstname = v.firstname
 			trlastname = v.lastname
 			trcharid = v.charIdentifier
+			PlayerTable[tonumber(_source)] = {sourceData=_source, firstname=trfirstname, lastname=trlastname, charid=trcharid, steamid=v.identifier, playerName=GetPlayerName(tonumber(_source))}
 		end
 	end
 	CanSaveCoords[_source] = true
 	TriggerClientEvent("gum:SelectedCharacter", tonumber(_source), tonumber(charidentifier))
-	PlayerTable[tonumber(_source)] = {firstname=trfirstname, lastname=trlastname, charid=trcharid}
 end
 
 function setUsedAfterCreate(source,charidentifier)
@@ -922,11 +921,11 @@ function setUsedAfterCreate(source,charidentifier)
 			trfirstname = v.firstname
 			trlastname = v.lastname
 			trcharid = v.charidentifier
+			PlayerTable[tonumber(_source)] = {sourceData=_source, firstname=trfirstname, lastname=trlastname, charid=trcharid, steamid=v.identifier, playerName=GetPlayerName(tonumber(_source))}
 		end
 	end
 	CanSaveCoords[_source] = true
 	TriggerClientEvent("gum:SelectedCharacter", tonumber(source), charidentifier)
-	PlayerTable[_source] = {firstname=trfirstname, lastname=trlastname, charid=trcharid}
 end
 
 
@@ -944,9 +943,10 @@ local function OnPlayerConnecting(name, setKickReason, deferrals)
 	Wait(2000)
 
 
-	if not identifiers then
-        deferrals.done("\n\n You dont have started steam \n ")
-    end
+	if string.match(identifiers, "licence") then
+		deferrals.done("\n\n You dont have started steam \n ")
+	end
+
 	deferrals.update(string.format("Welcome on connecting too gum script server : %s. \n Checking ban account.", name))
 	Wait(2000)
 
@@ -955,7 +955,9 @@ local function OnPlayerConnecting(name, setKickReason, deferrals)
 			deferrals.done("\n\n On this server you are blocked : \n "..result[1].reason.." \n \n Do datu : \n "..result[1].date_convert.." \n\n Pro více informací můžeš navštívit discord a založit ticket.")
 		end
 	end)
+
 	Wait(1000)
+
 	if Config.Whitelist == false then
         whitelisted = true
 	else
@@ -994,10 +996,7 @@ local function OnPlayerConnecting(name, setKickReason, deferrals)
 end
 
 function gumCore.Error(text)
-	print("")
-	print("^2GUM Core - ^8Error Message^0")
-	print("^8"..text.."^0")
-	print("")
+	print("^2GUM Core - ^8Error Message^0 - ^8"..text.."^0")
 end
 
 function gumCore.Debug(text)

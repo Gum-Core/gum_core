@@ -5,11 +5,7 @@ Config.Onesync = true
 Config.Info_print = true
 Config.Char_Count = 2
 
-Config.SpawnCoords = {1240.63, -1282.88, 75.94, 312.0}
-
 Config.Eagle_Eye = true
-Config.HidePlayersCore = false
-Config.HideHorseCores = false
 Config.Whitelist = false
 
 Config.Language = {

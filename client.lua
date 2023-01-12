@@ -12,24 +12,6 @@ AddEventHandler("gum:SelectedCharacter", function(charid)
     if Config.Eagle_Eye then
         Citizen.InvokeNative(0xA63FCAD3A6FEC6D2, PlayerId(), true)
     end
-    if Config.HidePlayersCore then
-        Citizen.InvokeNative(0xC116E6DF68DCE667, 0, 2)
-        Citizen.InvokeNative(0xC116E6DF68DCE667, 1, 2)
-        Citizen.InvokeNative(0xC116E6DF68DCE667, 2, 2)
-        Citizen.InvokeNative(0xC116E6DF68DCE667, 3, 2)
-        Citizen.InvokeNative(0xC116E6DF68DCE667, 4, 2)
-        Citizen.InvokeNative(0xC116E6DF68DCE667, 5, 2)
-
-    end
-    if Config.HideHorseCores then
-        Citizen.InvokeNative(0xC116E6DF68DCE667, 6, 2)
-        Citizen.InvokeNative(0xC116E6DF68DCE667, 7, 2)
-        Citizen.InvokeNative(0xC116E6DF68DCE667, 8, 2)
-        Citizen.InvokeNative(0xC116E6DF68DCE667, 9, 2)
-        Citizen.InvokeNative(0xC116E6DF68DCE667, 10, 2)
-        Citizen.InvokeNative(0xC116E6DF68DCE667, 11, 2)
-
-    end
     Citizen.CreateThread(function()
         while true do
             local timer = 0
@@ -38,7 +20,7 @@ AddEventHandler("gum:SelectedCharacter", function(charid)
             else
                 timer = 2*60000
             end 
-	TriggerServerEvent("gum_core:checkPlayersOnline")
+	        TriggerServerEvent("gum_core:checkPlayersOnline")
             Citizen.Wait(timer)
             local GetCoords = GetEntityCoords(PlayerPedId())
             local GetHeading = GetEntityHeading(PlayerPedId())
