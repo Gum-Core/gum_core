@@ -105,6 +105,7 @@ CREATE TABLE `items` (
   `type` varchar(50) DEFAULT NULL,
   `usable` tinyint(1) DEFAULT NULL,
   `descriptions` varchar(255) DEFAULT NULL,
+  `metadata` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`item`) USING BTREE,
   KEY `label` (`label`)
 ) ENGINE=InnoDB;
