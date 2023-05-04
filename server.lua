@@ -343,8 +343,7 @@ function User.setGroup(source, id, group)
 end
 
 
-RegisterServerEvent('gum:setGroup')
-AddEventHandler('gum:setGroup', function(source, group)
+RegisterServerEvent('gum:setGroup', function(source, group)
 	local _source = source
 	if _source ~= nil and group ~= nil then
 		local User = gumCore.getUser(tonumber(_source))
@@ -361,16 +360,14 @@ AddEventHandler('gum:setGroup', function(source, group)
 	end
 end)
 
-RegisterServerEvent('gum:addNewCallBack')
-AddEventHandler('gum:addNewCallBack', function(callbackName, fn)
+RegisterServerEvent('gum:addNewCallBack', function(callbackName, fn)
 	print("GUM Core : "..callbackName.." Callback registered!")
 	addCallbackHandler(callbackName, function(cb, source, ...)
 		cb(fn(source, ...))
 	end)
 end)
 
-RegisterServerEvent('getCore')
-AddEventHandler('getCore', function(cb)
+RegisterServerEvent('getCore', function(cb)
 	cb(gumCore)
 end)
 
@@ -433,8 +430,7 @@ function Character.setMeta(source, meta_table)
 	end
 end
 
-RegisterServerEvent('gum:setJob')
-AddEventHandler('gum:setJob', function(source, job, grade)
+RegisterServerEvent('gum:setJob', function(source, job, grade)
 	local _source = source
 	if _source ~= nil and job ~= nil and grade ~= nil then
 		local User = gumCore.getUser(tonumber(_source))
@@ -457,8 +453,7 @@ AddEventHandler('gum:setJob', function(source, job, grade)
 	end
 end)
 
-RegisterServerEvent('gum:setJobGrade')
-AddEventHandler('gum:setJobGrade', function(source, charid, grade)
+RegisterServerEvent('gum:setJobGrade', function(source, charid, grade)
 	local _source = source
 	if charid ~= nil and grade ~= nil then
 		local identifier = ""
@@ -476,8 +471,7 @@ AddEventHandler('gum:setJobGrade', function(source, charid, grade)
 	end
 end)
 
-RegisterServerEvent('gum:addMoney')
-AddEventHandler('gum:addMoney', function(source, curr, much)
+RegisterServerEvent('gum:addMoney', function(source, curr, much)
 	local _source = source
 	if _source ~= nil and curr ~= nil and much ~= nil then
 		local User = gumCore.getUser(tonumber(_source))
@@ -632,8 +626,7 @@ function gumCore.getPlayers(source)
 end
 
 
-RegisterServerEvent('gumCore:save_coords')
-AddEventHandler('gumCore:save_coords', function(coord_send)
+RegisterServerEvent('gumCore:save_coords', function(coord_send)
 	local _source = source
 	local User = gumCore.getUser(_source)
 	if User ~= nil then
@@ -757,8 +750,7 @@ Citizen.CreateThread(function()
 		Citizen.Wait(5*60000)
 	end
 end)
-RegisterServerEvent('gumCore:GetPlayerIds')
-AddEventHandler('gumCore:GetPlayerIds', function(source, charid, firstname, lastname, cb)
+RegisterServerEvent('gumCore:GetPlayerIds', function(source, charid, firstname, lastname, cb)
 	local id_player = 0
 	if tonumber(charid) == 0 then
 		for k,v in pairs(PlayerTable) do
@@ -807,8 +799,7 @@ function Character.changeSkin(source, clothetable)
 	end
 end
 
-RegisterServerEvent('gum:removeMoney')
-AddEventHandler('gum:removeMoney', function(source, type, much)
+RegisterServerEvent('gum:removeMoney', function(source, type, much)
 	local _source = source
 	if _source ~= nil and type ~= nil and much ~= nil then
 		local User = gumCore.getUser(tonumber(_source))
