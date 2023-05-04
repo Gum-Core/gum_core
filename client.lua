@@ -3,12 +3,12 @@ AddEventHandler('onClientResourceStart', function (resourceName)
     Citizen.InvokeNative(0x4B8F743A4A6D2FF8, true)
     SetPlayerHealthRechargeMultiplier(PlayerId(), 0.0)
 end)
+
 local CutCoordsx = 0.0
 local CutCoordsy = 0.0
 local CutCoordsz = 0.0
 
-RegisterNetEvent("gum:SelectedCharacter")
-AddEventHandler("gum:SelectedCharacter", function(charid)
+RegisterNetEvent("gum:SelectedCharacter", function(charid)
     if Config.Eagle_Eye then
         Citizen.InvokeNative(0xA63FCAD3A6FEC6D2, PlayerId(), true)
     end
@@ -37,17 +37,17 @@ AddEventHandler("gum:SelectedCharacter", function(charid)
         end
     end)
 end)
-RegisterNetEvent("gum_core:sendBack")
-AddEventHandler("gum_core:sendBack", function(countchar)
-	   SetDiscordAppId(Config.DiscordID)
-	   SetDiscordRichPresenceAsset('biglogo')
-	  SetDiscordRichPresenceAssetText(Config.DiscordPText)
+
+RegisterNetEvent("gum_core:sendBack", function(countchar)
+	SetDiscordAppId(Config.DiscordID)
+	SetDiscordRichPresenceAsset('biglogo')
+	SetDiscordRichPresenceAssetText(Config.DiscordPText)
   	SetDiscordRichPresenceAssetSmall('smalllogo')
-	 SetDiscordRichPresenceAssetSmallText(Config.DiscordSText)
+    SetDiscordRichPresenceAssetSmallText(Config.DiscordSText)
 	SetDiscordRichPresenceAction(0, "Discord", Config.DiscordButton) -- (OPTIONAL)
 
-            local playerName = GetPlayerName(PlayerId())
-            SetRichPresence(string.format("%s - %s/%s", playerName, countchar, 128))
+    local playerName = GetPlayerName(PlayerId())
+    SetRichPresence(string.format("%s - %s/%s", playerName, countchar, 128))
 end)
 
 RegisterNetEvent("gum:endcallback", function(callbackName, ticket, ...)
@@ -57,8 +57,7 @@ RegisterNetEvent("gum:endcallback", function(callbackName, ticket, ...)
 	end
 end)
 
-RegisterNetEvent("gum:ExecuteServerCallBack")
-AddEventHandler("gum:ExecuteServerCallBack", function(callbackName, cb, ...)
+RegisterNetEvent("gum:ExecuteServerCallBack", function(callbackName, cb, ...)
     local ticket = generateTicket()
 	addCallbackResolution(callbackName, ticket, function(...)
 		cb(...)
